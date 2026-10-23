@@ -19,3 +19,5 @@ Publicación final: https://qr-dinamic-4all.vercel.app (READY). GitHub conectado
 ## Inicio de multiempresa
 
 Etapa 1 guardada en la rama feature/multiempresa-base. Consultar MULTIEMPRESA.md para implementación, pruebas y próximos pasos. Demo pública sin cambios: el acceso mediante cuentas todavía no está habilitado. Entorno Neon dev-multiempresa independiente, caduca el 30/10/2026.
+
+Etapa 2 terminada en desarrollo: Neon Auth, acceso real, activación manual y marca privada. Revisar http://localhost:3001 (npm run dev:accounts). Cuenta ficticia local en .account-review.txt. Detalles, validación y limitaciones en MULTIEMPRESA.md. La demo pública sigue en modo anterior.

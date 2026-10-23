@@ -6,3 +6,7 @@ export-*/
 *.zip
 tests/
 .demo-access.txt
+
+/.account-*.json
+/.account-*.txt
+/dist-accounts/

@@ -13,3 +13,7 @@ coverage/
 .neon
 
 .vercel
+
+/.account-*.json
+/.account-*.txt
+/dist-accounts/

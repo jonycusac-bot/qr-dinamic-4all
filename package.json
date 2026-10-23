@@ -15,10 +15,15 @@
     "db:migrate": "node --env-file-if-exists=.env --env-file-if-exists=.env.local scripts/migrate.mjs",
     "test:neon": "node --env-file-if-exists=.env --env-file-if-exists=.env.local --import tsx scripts/neon-integration.ts",
     "db:migrate:tenants": "node scripts/migrate-tenants.mjs",
-    "test:tenants": "node --import tsx scripts/tenant-integration.ts"
+    "test:tenants": "node --import tsx scripts/tenant-integration.ts",
+    "dev:accounts": "node --env-file=.env.multiempresa.local --import tsx server.ts",
+    "account:activate": "node --import tsx scripts/activate-company.ts",
+    "test:accounts": "node --import tsx scripts/account-integration.ts",
+    "build:accounts": "node --env-file=.env.multiempresa.local node_modules/vite/bin/vite.js build --outDir dist-accounts"
   },
   "dependencies": {
     "@neon/config": "^1.9.3",
+    "@neondatabase/auth": "^0.6.0-beta",
     "@tailwindcss/vite": "^4.1.14",
     "@types/qrcode": "^1.5.6",
     "@vercel/functions": "^3.10.3",

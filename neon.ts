@@ -2,7 +2,8 @@ import { defineConfig } from "@neon/config/v1";
 
 export default defineConfig({
   // Declare your Neon services here
-  auth: false,
+  // Auth is provisioned only when using the explicit accounts environment.
+  auth: process.env.ACCOUNT_MODE === 'true',
   // Branch policy: per-branch tuning
   branch: (branch) => {
     if (branch.isDefault) {

@@ -2,6 +2,7 @@ import 'dotenv/config';
 import express from 'express';
 import path from 'path';
 import crypto from 'node:crypto';
+import { createAccountRouter } from './server/accounts.js';
 import { INITIAL_PROJECTS, INITIAL_USERS } from './src/data/initialData.js';
 import { QRProject, AppUser, ScanEvent, Branding } from './src/types.js';
 import { createPostgresStore, transactionalMiddleware, type StateStore, type AppState } from './state-store.js';
@@ -101,6 +102,13 @@ export async function createApp(stateStore: StateStore | null = store, panelPass
   app.get('/api/health', (req, res) => {
     res.json({ status: 'ok', timestamp: new Date().toISOString() });
   });
+
+  if (process.env.ACCOUNT_MODE === 'true') {
+    const { NEON_AUTH_BASE_URL, ACCOUNT_APP_ORIGIN, MULTITENANT_DATABASE_URL } = process.env;
+    if (!NEON_AUTH_BASE_URL || !ACCOUNT_APP_ORIGIN || !MULTITENANT_DATABASE_URL) throw new Error('Falta configurar el entorno de cuentas.');
+    const accounts = createAccountRouter({authBaseUrl:NEON_AUTH_BASE_URL,appOrigin:ACCOUNT_APP_ORIGIN,databaseUrl:MULTITENANT_DATABASE_URL});
+    app.use(accounts.router);
+  }
 
   app.use('/api', (req, res, next) => {
     if (req.path === '/public-branding' || !panelPassword) { next(); return; }
