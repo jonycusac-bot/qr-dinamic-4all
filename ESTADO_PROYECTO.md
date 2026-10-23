@@ -15,3 +15,7 @@ Pruebas iniciales: TypeScript y build correctos; 3 pruebas API correctas; migrac
 Próxima fase comercial: usuarios reales, espacios independientes por cliente, autorización en servidor, cuotas y facturación. Actualmente es una demo con una clave compartida por espacio.
 
 Publicación final: https://qr-dinamic-4all.vercel.app (READY). GitHub conectado a Vercel: cada push en main activa despliegue. VALIDACION.md registra 4 pruebas correctas y verificación pública de la demo.
+
+## Inicio de multiempresa
+
+Etapa 1 guardada en la rama feature/multiempresa-base. Consultar MULTIEMPRESA.md para implementación, pruebas y próximos pasos. Demo pública sin cambios: el acceso mediante cuentas todavía no está habilitado. Entorno Neon dev-multiempresa independiente, caduca el 30/10/2026.

@@ -13,7 +13,9 @@
     "test": "node --import tsx --test tests/*.test.ts",
     "db:check": "node --env-file-if-exists=.env --env-file-if-exists=.env.local scripts/neon-check.mjs",
     "db:migrate": "node --env-file-if-exists=.env --env-file-if-exists=.env.local scripts/migrate.mjs",
-    "test:neon": "node --env-file-if-exists=.env --env-file-if-exists=.env.local --import tsx scripts/neon-integration.ts"
+    "test:neon": "node --env-file-if-exists=.env --env-file-if-exists=.env.local --import tsx scripts/neon-integration.ts",
+    "db:migrate:tenants": "node scripts/migrate-tenants.mjs",
+    "test:tenants": "node --import tsx scripts/tenant-integration.ts"
   },
   "dependencies": {
     "@neon/config": "^1.9.3",
