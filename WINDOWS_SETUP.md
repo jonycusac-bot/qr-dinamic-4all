@@ -1,8 +1,8 @@
 # Desarrollo y pruebas en Windows
 
-La arquitectura elegida es Vercel + Neon + OneDrive/SharePoint. El PC se utiliza para desarrollar y probar; no necesita permanecer encendido para servir la web publicada en Vercel.
+La arquitectura elegida es Vercel + Neon + enlaces a documentación. El PC se utiliza para desarrollar y probar; no necesita permanecer encendido para servir la web publicada en Vercel.
 
-En `C:\Users\Usuario\Desktop\QR`:
+En `C:\Users\Usuario\Desktop\Qr Dinamic 4all`:
 
 ```powershell
 npm ci

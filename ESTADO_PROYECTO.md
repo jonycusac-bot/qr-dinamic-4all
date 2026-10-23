@@ -13,3 +13,5 @@ La configuración local está en .env.local y la clave está en .demo-access.txt
 Pruebas iniciales: TypeScript y build correctos; 3 pruebas API correctas; migración e integración Neon correctas con esquema temporal. Ver VALIDACION.md para el resultado final del despliegue.
 
 Próxima fase comercial: usuarios reales, espacios independientes por cliente, autorización en servidor, cuotas y facturación. Actualmente es una demo con una clave compartida por espacio.
+
+Publicación final: https://qr-dinamic-4all.vercel.app (READY). GitHub conectado a Vercel: cada push en main activa despliegue. VALIDACION.md registra 4 pruebas correctas y verificación pública de la demo.
