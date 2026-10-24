@@ -29,7 +29,7 @@ export const Header: React.FC<HeaderProps> = ({
   onTabChange,
   onNewProjectClick,
 }) => {
-  const { currentUser, branding } = useApp();
+  const { currentUser, branding,accountMode } = useApp();
   const isAdmin = currentUser?.role === 'admin';
   const [isSwitchModalOpen, setIsSwitchModalOpen] = useState(false);
 
@@ -106,8 +106,8 @@ export const Header: React.FC<HeaderProps> = ({
               <BrandSettings />
               {/* User Switch Badge */}
               <button
-                onClick={() => setIsSwitchModalOpen(true)}
-                title="Seleccionar perfil de trabajo"
+                onClick={() => {if(!accountMode)setIsSwitchModalOpen(true);}}
+                title="Cuenta de trabajo"
                 className={`flex items-center gap-2 px-2.5 py-1.5 sm:px-3 sm:py-1.5 rounded-xl border transition cursor-pointer text-left ${
                   isAdmin
                     ? 'bg-sky-950/60 border-sky-600/40 hover:bg-sky-900/60 text-sky-200'
@@ -141,7 +141,7 @@ export const Header: React.FC<HeaderProps> = ({
                     )}
                   </div>
                   <span className="text-[10px] text-slate-400 flex items-center gap-0.5">
-                    <span>Cambiar perfil</span>
+                    <span>Cuenta autenticada</span>
                     <ChevronDown className="w-2.5 h-2.5" />
                   </span>
                 </div>

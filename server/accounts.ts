@@ -1,4 +1,5 @@
 import express from 'express';
+import { installAccountFeatures } from './account-features.js';
 import { Pool } from 'pg';
 import { attachDatabasePool } from '@vercel/functions';
 import { createTenantRepository, TenantAccessError, TenantNotFoundError } from './tenants.js';
@@ -56,18 +57,21 @@ export function createAccountRouter(config: AccountConfig) {
   const route=(handler:(req:express.Request,res:express.Response)=>Promise<void>):express.RequestHandler=>(req,res)=>{
     void handler(req,res).catch(error=>{
       if(error instanceof TenantAccessError || error instanceof TenantNotFoundError){res.status(error.status).json({error:error.message});return;}
-      if(error instanceof Error && /Nombre no válido|Logo no válido/.test(error.message)){res.status(400).json({error:error.message});return;}
+      if(error instanceof Error && /Nombre no válido|Logo no válido|Destino no válido|Código QR no válido|Estado no válido/.test(error.message)){res.status(400).json({error:error.message});return;}
+      if(error?.code==='22P02'){res.status(400).json({error:'Identificador no válido.'});return;}
       console.error('[Accounts] Operation failed');res.status(503).json({error:'No se pudo completar la operación.'});
     });
   };
   router.get('/api/account/session',route(async(_req,res)=>{
     const companies=await pool.query(`SELECT c.id,c.name,c.logo_url,m.role FROM tenant_companies c JOIN tenant_memberships m ON m.company_id=c.id WHERE m.identity_id=$1 AND c.status='active' ORDER BY c.created_at`,[res.locals.identity.id]);
-    res.json({user:res.locals.identity,companies:companies.rows});
+    const admin=await pool.query('SELECT 1 FROM platform_administrators WHERE identity_id=$1',[res.locals.identity.id]);
+    res.json({user:res.locals.identity,companies:companies.rows,isPlatformAdmin:!!admin.rowCount});
   }));
   router.get('/api/account/companies/:companyId',route(async(req,res)=>{res.json(await repo.getCompany(context(req,res)));}));
   router.put('/api/account/companies/:companyId/branding',route(async(req,res)=>{res.json(await repo.updateBrand(context(req,res),req.body?.name,req.body?.logoUrl));}));
   router.get('/api/account/companies/:companyId/projects',route(async(req,res)=>{res.json(await repo.listProjects(context(req,res)));}));
   router.get('/api/account/companies/:companyId/members',route(async(req,res)=>{res.json(await repo.listMembers(context(req,res)));}));
+  installAccountFeatures(router,pool,route);
   // Never fall through to the legacy password/profile routes in account mode.
   router.use('/api',(_req,res)=>{res.status(404).json({error:'Ruta no encontrada.'});});
   router.use('/r',(_req,res)=>{res.status(404).send('Este entorno de cuentas todavía no sirve las redirecciones de la demo.');});

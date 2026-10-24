@@ -1,8 +1,11 @@
 import React, { createContext, useContext, useState, useEffect, useCallback, useRef, ReactNode } from 'react';
 import { QRProject, AppUser, ScanEvent, ScanStatsSummary, Branding } from '../types';
-import { requestJson, ApiError } from '../utils/api';
+import { requestJson as baseRequestJson, ApiError } from '../utils/api';
 
 interface AppContextType {
+  companyId:string|null;
+  tenantRole:string;
+  accountMode: boolean;
   branding: Branding;
   updateBranding: (data: Branding) => Promise<Branding>;
   projects: QRProject[];
@@ -43,7 +46,8 @@ function readPreference(key: string) {
 function savePreference(key: string, value: string) {
   try { if (value) localStorage.setItem(key, value); else localStorage.removeItem(key); } catch { /* Preferences are optional. */ }
 }
-export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+export const AppProvider: React.FC<{ children: ReactNode; tenant?:{companyId:string;identityId:string;role:string} }> = ({ children,tenant }) => {
+  const requestJson=useCallback(<T,>(url:string,init:RequestInit={})=>baseRequestJson<T>(tenant?'/api/account/companies/'+tenant.companyId+'/panel'+url.replace(/^\/api/,''):url,init),[tenant?.companyId]);
   const [branding, setBranding] = useState<Branding>({name:'QR Dinamic 4all',logoUrl:''});
   const [projects, setProjects] = useState<QRProject[]>([]);
   const [users, setUsers] = useState<AppUser[]>([]);
@@ -56,8 +60,8 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
   const [customBaseUrl, setCustomBaseUrlState] = useState(() => import.meta.env.VITE_QR_BASE_URL?.trim() || readPreference(BASE_URL_KEY));
   const revision = useRef(0);
   const pendingWrites = useRef(0);
-  const currentUser = users.find(u => u.id === currentUserId && u.active) || users.find(u => u.active) || null;
-  const isAdmin = true; // Existing open-access pilot: profiles are not authentication.
+  const currentUser = tenant ? users.find(u=>u.id===tenant.identityId)||null : users.find(u => u.id === currentUserId && u.active) || users.find(u => u.active) || null;
+  const isAdmin = tenant ? ['owner','admin'].includes(tenant.role) : true;
   const applyState = (state: ServerState) => {
     if (state.branding) setBranding(state.branding);
     setProjects(state.projects); setUsers(state.users); setScans(state.scans);
@@ -76,7 +80,7 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
         setSyncError(error instanceof Error ? error.message : 'No se pudo conectar con el servidor.');
       }
     } finally { setIsLoading(false); }
-  }, []);
+  }, [requestJson]);
   useEffect(() => {
     void requestJson<Branding>('/api/public-branding').then(setBranding).catch(() => undefined);
     void refreshData();
@@ -98,18 +102,18 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
     } finally { ++revision.current; --pendingWrites.current; }
   }
   const updateBranding = async (data: Branding) => { const saved = await mutate<Branding>('/api/branding','PUT',data); setBranding(saved); return saved; };
-  const loginAsUser = (id: string) => { setCurrentUserId(id); savePreference(PROFILE_KEY, id); };
+  const loginAsUser = (id: string) => { if(tenant)return;setCurrentUserId(id); savePreference(PROFILE_KEY, id); };
   const setCustomBaseUrl = (url: string) => { const value = url.trim(); setCustomBaseUrlState(value); savePreference(BASE_URL_KEY, value); };
   const isDevEnvironment = window.location.hostname.includes('ais-dev-');
   const sharedAppUrl = isDevEnvironment ? `${window.location.protocol}//${window.location.hostname.replace('ais-dev-', 'ais-pre-')}${window.location.port ? ':' + window.location.port : ''}` : '';
-  const getDynamicUrl = (shortCode: string) => `${(customBaseUrl || window.location.origin).replace(/\/+$/, '')}/r/${encodeURIComponent(shortCode)}`;
+  const getDynamicUrl = (shortCode: string) => `${((tenant?'':customBaseUrl) || window.location.origin).replace(/\/+$/, '')}/${tenant?'q':'r'}/${encodeURIComponent(shortCode)}`;
   const createProject = async (data: Partial<QRProject>) => {
     const saved = await mutate<QRProject>('/api/projects', 'POST', data);
     setProjects(prev => [saved, ...prev.filter(p => p.id !== saved.id)]);
     return saved;
   };
   const updateProject = async (id: string, updates: Partial<QRProject>, changeReason?: string) => {
-    const saved = await mutate<QRProject>(`/api/projects/${encodeURIComponent(id)}`, 'PUT', { ...updates, changeReason, changedBy: currentUser?.name });
+    const saved = await mutate<QRProject>(`/api/projects/${encodeURIComponent(id)}`, 'PUT', { ...(tenant ? projects.find(p=>p.id===id) : {}), ...updates, changeReason, changedBy: currentUser?.name });
     setProjects(prev => prev.map(p => p.id === id ? saved : p));
     return saved;
   };
@@ -206,7 +210,7 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
     const state = await mutate<ServerState>('/api/reset-demo', 'POST');
     applyState(state);
   };
-  return <AppContext.Provider value={{ branding, updateBranding, projects, users, scans, isLoading, syncError, requiresPanelAccess, refreshData, selectedProject, setSelectedProject, currentUser, isAdmin, loginAsUser, createProject, updateProject, deleteProject, updateOneDriveUrl, createUser, updateUser, deleteUser, recordSimulatedScan, getStats, getDynamicUrl, customBaseUrl, setCustomBaseUrl, isDevEnvironment, sharedAppUrl, resetDemo }}>{children}</AppContext.Provider>;
+  return <AppContext.Provider value={{ companyId:tenant?.companyId||null,tenantRole:tenant?.role||'',accountMode:!!tenant,branding, updateBranding, projects, users, scans, isLoading, syncError, requiresPanelAccess, refreshData, selectedProject, setSelectedProject, currentUser, isAdmin, loginAsUser, createProject, updateProject, deleteProject, updateOneDriveUrl, createUser, updateUser, deleteUser, recordSimulatedScan, getStats, getDynamicUrl, customBaseUrl, setCustomBaseUrl, isDevEnvironment, sharedAppUrl, resetDemo }}>{children}</AppContext.Provider>;
 };
 export const useApp = (): AppContextType => {
   const context = useContext(AppContext);

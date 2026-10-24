@@ -50,3 +50,27 @@ No se ha activado el modo de cuentas en producción ni se ha modificado Illusion
 ## Frase para retomar
 
 Continuamos QR Dinamic 4all desde CONTINUAR_MANANA.md, rama feature/multiempresa-base. Conectemos la gestión de QR a las empresas autenticadas sin cambiar los enlaces existentes.
+
+
+## 24 octubre: QR y administración local
+QR por empresa conectados: crear, PNG, destino editable con enlace estable /q/, pausa, archivo y contador de accesos. Los enlaces localhost solo sirven en el propio ordenador. Las rutas anteriores /r/ de la demo no se han migrado.
+Panel de clientes implementado con permisos en platform_administrators y activación desde web. Migración 003 aplicada solo en desarrollo. Asignación a jonaillusion@gmail.com pendiente de autorización explícita tras rechazo del revisor automático. Ningún permiso general asignado a cuentas reales.
+Validado TypeScript, compilación de cuentas e integración de acceso, separación entre empresas, permisos y QR. Cambios locales, sin publicar ni subir a GitHub en esta etapa.
+
+
+## Panel original conectado (24 octubre)
+Acceso de administrador: http://localhost:3001/admin. Acceso de clientes: http://localhost:3001/. La identidad de jonaillusion@gmail.com tiene permiso general de desarrollo con autorización explícita del usuario.
+La empresa autenticada usa el panel original App.tsx con instalaciones, diseño/pegatinas, estadísticas, marca y simulador. Las rutas panel están autorizadas por empresa. Migración 004 aplicada en desarrollo para detalles de proyectos y accesos. Equipo muestra miembros reales; invitaciones pendientes. Perfil del navegador no cambia la identidad autenticada. Eliminar archiva conservando los datos.
+Verificado TypeScript, compilación e integración con empresas ficticias, diseño persistente, historial, enlaces estables, simulación, archivo y acceso entre empresas denegado. No publicado ni subido a GitHub.
+
+
+## Consumo en administración (24 octubre)
+/admin muestra resumen por empresa, QR totales/activos/pausados/archivados, accesos reales totales y del mes calendario Madrid, simulaciones separadas y detalle paginado de códigos. Límite inicial 100 QR creados acumulados, incluidos archivados; configurable por empresa, guardado en tenant_companies.qr_limit (migración 005 solo desarrollo). El exceso alerta para revisar cobro; no hay cargos ni bloqueo automático. Solo administradores generales acceden a estas rutas.
+
+
+## Equipo con invitaciones (24 octubre)
+Equipo permite crear invitaciones por correo y rol (técnico, consulta; solo propietario invita administradores). Se copia enlace personal de 7 días, sin envío automático de correo. Invitado abre enlace, entra o se registra con el correo indicado y acepta. Token en fragmento URL, solo hash en BD, uso único, revocación y reemplazo invalidan enlaces. No se concede administración general. Migración 006 aplicada solo en desarrollo. Localhost solo sirve en este ordenador; publicación y correo de invitación pendientes para uso remoto.
+
+
+## Alta simplificada de equipo
+Equipo > Añadir usuario: nombre, correo y rol; enlace de alta por 7 días sin envío de correo. Datos de alta obtenidos del servidor mediante token; nombre y correo preparados, nuevo usuario elige contraseña y entra directamente. Si ya tiene cuenta, puede iniciar sesión. Se mantiene el enlace al cambiar entre registro y acceso. Si hay una cuenta distinta abierta se informa y se ofrece cambiarla, sin intentar concederle el acceso. Migración 007 aplicada en desarrollo.

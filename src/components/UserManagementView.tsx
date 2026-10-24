@@ -1,3 +1,4 @@
+import {TeamAccess} from '../TeamAccess';
 import React, { useState } from 'react';
 import {
   Users,
@@ -21,7 +22,7 @@ import { useApp } from '../context/AppContext';
 import { ConfirmModal } from './ConfirmModal';
 
 export const UserManagementView: React.FC = () => {
-  const { users, createUser, updateUser, deleteUser, projects, currentUser, isAdmin } = useApp();
+  const { accountMode, users, createUser, updateUser, deleteUser, projects, currentUser, isAdmin } = useApp();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingUser, setEditingUser] = useState<AppUser | null>(null);
@@ -32,6 +33,7 @@ export const UserManagementView: React.FC = () => {
   const [role, setRole] = useState<UserRole>('technician');
   const [error, setError] = useState<string | null>(null);
 
+  if(accountMode)return <TeamAccess/>;
   const handleOpenCreate = () => {
     setEditingUser(null);
     setName('');

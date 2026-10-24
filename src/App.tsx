@@ -190,9 +190,9 @@ const AppContent: React.FC = () => {
   );
 };
 
-export default function App() {
+export default function App({tenant}:{key?:string;tenant?:{companyId:string;identityId:string;role:string;key?:string}} = {}) {
   return (
-    <AppProvider>
+    <AppProvider tenant={tenant}>
       <AppContent />
     </AppProvider>
   );

@@ -1,0 +1,1 @@
+ALTER TABLE tenant_companies ADD COLUMN IF NOT EXISTS qr_limit integer NOT NULL DEFAULT 100 CHECK(qr_limit BETWEEN 1 AND 1000000);
