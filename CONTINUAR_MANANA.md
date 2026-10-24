@@ -74,3 +74,7 @@ Equipo permite crear invitaciones por correo y rol (técnico, consulta; solo pro
 
 ## Alta simplificada de equipo
 Equipo > Añadir usuario: nombre, correo y rol; enlace de alta por 7 días sin envío de correo. Datos de alta obtenidos del servidor mediante token; nombre y correo preparados, nuevo usuario elige contraseña y entra directamente. Si ya tiene cuenta, puede iniciar sesión. Se mantiene el enlace al cambiar entre registro y acceso. Si hay una cuenta distinta abierta se informa y se ofrece cambiarla, sin intentar concederle el acceso. Migración 007 aplicada en desarrollo.
+
+
+## Corrección de caducidad — 24 octubre 2026
+La caducidad anteriormente indicada del 30 de octubre YA NO APLICA: se retiró y se verificó que dev-multiempresa no tiene expires_at. Creado punto de recuperación respaldo-previo-piloto-20261024, ID br-plain-wildflower-ba5e14uy, sin compute, dentro del mismo proyecto. La ventana histórica es de 6 horas. Ensayo de restauración y copias externas independientes pendientes antes de producción. Siguiente: piloto guiado desde la web publicada, cliente nuevo > activar empresa > marca > QR impreso > cambios de destino > alta de miembro.
