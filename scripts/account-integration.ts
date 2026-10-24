@@ -118,6 +118,18 @@ try {
  assert.equal((await a.request(invites,'POST',{email:emailB,role:'admin'})).status,409);
  assert.equal((await pool.query('SELECT role FROM tenant_memberships WHERE company_id=$1 AND identity_id=$2',[companyB.id,userIds[1]])).rows[0].role,'owner');
  console.log('PASS: invitación privada, aceptación ligada al correo, revocación, caducidad, uso único, consulta sin edición y sin acceso general.');
+ const companyStatus='/api/account/admin/companies/'+companyA.id+'/status';
+ assert.equal((await b.request(companyStatus,'PUT',{status:'suspended'})).status,403);
+ assert.equal((await a.request(companyStatus,'PUT',{status:'invalid'})).status,400);
+ assert.equal((await a.request(companyStatus,'PUT',{status:'suspended'})).status,200);
+ const suspendedSession=await(await a.request('/api/account/session')).json();assert.ok(suspendedSession.hasSuspendedCompany);assert.ok(!suspendedSession.companies.some((c:any)=>c.id===companyA.id));
+ assert.equal((await a.request('/api/account/companies/'+companyA.id+'/panel/state')).status,403);
+ assert.equal((await fetch(base+'/q/'+project.short_code,{redirect:'manual'})).status,404);
+ assert.equal((await a.request(companyStatus,'PUT',{status:'active'})).status,200);
+ assert.equal((await a.request('/api/account/companies/'+companyA.id+'/panel/state')).status,200);
+ assert.equal((await fetch(base+'/q/'+project.short_code,{redirect:'manual'})).status,302);
+ assert.ok((await(await a.request('/api/account/admin/clients')).json()).some((c:any)=>c.id===userIds[1]));
+ console.log('PASS: baja reversible bloquea miembros y QR, reactivación restaura acceso, permisos de administrador comprobados.');
  const cookieBeforeLogout=a.cookie();
  assert.equal((await a.request('/api/identity/sign-out','POST',{})).status,200);
  assert.equal((await a.request('/api/account/session')).status,401);

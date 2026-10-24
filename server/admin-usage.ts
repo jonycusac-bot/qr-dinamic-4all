@@ -3,6 +3,10 @@ import type {Pool} from 'pg';
 import {TenantAccessError} from './tenants.js';
 export function installAdminUsage(router:Router,pool:Pool,route:(fn:(req:Request,res:Response)=>Promise<void>)=>any){
  async function admin(res:Response){if(!(await pool.query('SELECT 1 FROM platform_administrators WHERE identity_id=$1',[res.locals.identity.id])).rowCount)throw new TenantAccessError();}
+ router.put('/api/account/admin/companies/:companyId/status',route(async(req,res)=>{
+  await admin(res);const status=req.body?.status;if(!['active','suspended'].includes(status)){res.status(400).json({error:'Estado de empresa no válido.'});return;}
+  const result=await pool.query('UPDATE tenant_companies SET status=$2 WHERE id=$1 RETURNING id,name,status',[req.params.companyId,status]);if(!result.rowCount){res.status(404).json({error:'Empresa no encontrada.'});return;}res.json(result.rows[0]);
+ }));
  router.get('/api/account/admin/usage',route(async(_req,res)=>{
   await admin(res);
   const result=await pool.query(`WITH projects AS (SELECT company_id,count(*)::int AS total,count(*) FILTER(WHERE status='active')::int AS active,count(*) FILTER(WHERE status='paused')::int AS paused,count(*) FILTER(WHERE status='archived')::int AS archived FROM tenant_qr_projects GROUP BY company_id), scans AS (SELECT company_id,count(*) FILTER(WHERE COALESCE(details->>'simulated','false')<>'true')::int AS scans,count(*) FILTER(WHERE COALESCE(details->>'simulated','false')<>'true' AND scanned_at>=date_trunc('month',now() AT TIME ZONE 'Europe/Madrid') AT TIME ZONE 'Europe/Madrid')::int AS month_scans,count(*) FILTER(WHERE details->>'simulated'='true')::int AS simulated FROM tenant_scan_events GROUP BY company_id) SELECT c.id,c.name,c.status,c.qr_limit,COALESCE(p.total,0) AS total,COALESCE(p.active,0) AS active,COALESCE(p.paused,0) AS paused,COALESCE(p.archived,0) AS archived,COALESCE(s.scans,0) AS scans,COALESCE(s.month_scans,0) AS month_scans,COALESCE(s.simulated,0) AS simulated FROM tenant_companies c LEFT JOIN projects p ON p.company_id=c.id LEFT JOIN scans s ON s.company_id=c.id ORDER BY c.name,c.id`);

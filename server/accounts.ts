@@ -65,7 +65,8 @@ export function createAccountRouter(config: AccountConfig) {
   router.get('/api/account/session',route(async(_req,res)=>{
     const companies=await pool.query(`SELECT c.id,c.name,c.logo_url,m.role FROM tenant_companies c JOIN tenant_memberships m ON m.company_id=c.id WHERE m.identity_id=$1 AND c.status='active' ORDER BY c.created_at`,[res.locals.identity.id]);
     const admin=await pool.query('SELECT 1 FROM platform_administrators WHERE identity_id=$1',[res.locals.identity.id]);
-    res.json({user:res.locals.identity,companies:companies.rows,isPlatformAdmin:!!admin.rowCount});
+    const suspended=await pool.query("SELECT 1 FROM tenant_memberships m JOIN tenant_companies c ON c.id=m.company_id WHERE m.identity_id=$1 AND c.status='suspended' LIMIT 1",[res.locals.identity.id]);
+    res.json({user:res.locals.identity,companies:companies.rows,isPlatformAdmin:!!admin.rowCount,hasSuspendedCompany:!!suspended.rowCount});
   }));
   router.get('/api/account/companies/:companyId',route(async(req,res)=>{res.json(await repo.getCompany(context(req,res)));}));
   router.put('/api/account/companies/:companyId/branding',route(async(req,res)=>{res.json(await repo.updateBrand(context(req,res),req.body?.name,req.body?.logoUrl));}));

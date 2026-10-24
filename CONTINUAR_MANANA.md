@@ -78,3 +78,7 @@ Equipo > Añadir usuario: nombre, correo y rol; enlace de alta por 7 días sin e
 
 ## Corrección de caducidad — 24 octubre 2026
 La caducidad anteriormente indicada del 30 de octubre YA NO APLICA: se retiró y se verificó que dev-multiempresa no tiene expires_at. Creado punto de recuperación respaldo-previo-piloto-20261024, ID br-plain-wildflower-ba5e14uy, sin compute, dentro del mismo proyecto. La ventana histórica es de 6 horas. Ensayo de restauración y copias externas independientes pendientes antes de producción. Siguiente: piloto guiado desde la web publicada, cliente nuevo > activar empresa > marca > QR impreso > cambios de destino > alta de miembro.
+
+
+## Administración compacta
+Pestañas Resumen, Clientes, Registros pendientes y Códigos y consumo. Registros actualizados cada 20 segundos con la pestaña visible y al recuperar foco; avisos dentro del portal y contador persistente de pendientes. No son notificaciones push ni correo. Baja reversible por empresa con confirmación: suspende a sus miembros y QR, conserva datos, permite reactivar. Cuenta suspendida se distingue de registro pendiente.
