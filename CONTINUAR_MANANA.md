@@ -1,84 +1,55 @@
-# Para continuar mañana — 23 octubre 2026
+# Para retomar — estado al cierre del 24 de octubre de 2026
 
-## Abrir el proyecto correcto
+## Preferencia del usuario
+Antes de hacer cambios, preguntar siempre si quiere añadir algo más al alcance. No volver a desplegar, solicitar correos ni cambiar contraseñas sin revisar primero el punto pendiente con él.
 
-Carpeta: C:\Users\Usuario\Desktop\Qr Dinamic 4all
-Repositorio privado: https://github.com/jonycusac-bot/qr-dinamic-4all
-Rama de trabajo: feature/multiempresa-base
+## Proyecto y accesos correctos
+Carpeta: C:/Users/Usuario/Desktop/Qr Dinamic 4all
+GitHub: https://github.com/jonycusac-bot/qr-dinamic-4all
+Rama: feature/multiempresa-base
+Clientes: https://qr-dinamic-4all-pruebas.vercel.app/
+Registro: https://qr-dinamic-4all-pruebas.vercel.app/registro
+Administrador: https://qr-dinamic-4all-pruebas.vercel.app/admin
+Administrador general: jonaillusion@gmail.com. Su contraseña la conoce solo el usuario.
+La URL qr-dinamic-4all.vercel.app es la demo ANTERIOR y puede mostrar Fantastic World/B&O y clave compartida. No usar para este piloto. El proyecto Illusion de Desktop/QR también es independiente.
 
-El proyecto Illusion de C:\Users\Usuario\Desktop\QR es independiente. La demo pública https://qr-dinamic-4all.vercel.app conserva todavía el acceso anterior; la nueva versión de cuentas se prueba localmente.
+## Terminado, guardado y publicado
+- Cuentas reales, empresas aisladas y activación manual desde administración.
+- Panel original por empresa: instalaciones, diseño/pegatinas QR, destinos editables, estadísticas y marca.
+- QR nuevos en /q/:codigo. Los antiguos impresos con localhost se deben descargar de nuevo desde el dominio público.
+- Equipo: alta por nombre, correo y rol; enlace personal de 7 días, contraseña propia y aceptación ligada al correo. No se envía correo de invitación. Caducidad, revocación y permisos probados.
+- Accesos visualmente diferenciados con logo SVG de ejemplo; registro en /registro y administración violeta.
+- Administración compacta: Resumen, Clientes, Registros pendientes, Códigos y consumo. Avisos dentro del portal con consulta cada 20 segundos mientras está visible. Todavía no hay correo ni push de nuevos registros.
+- Baja reversible por empresa: suspende miembros y redirecciones, conserva datos y permite reactivar; probado con empresas ficticias.
+- Consumo por empresa, detalle paginado, accesos reales separados de simulaciones y límite inicial de 100 QR creados, incluidos archivados. El exceso alerta para revisión; no cobra automáticamente. Revisar comercialmente si se facturará por activos en vez de creados.
+- TypeScript, compilaciones e integración comprobados. Último código publicado: 824389f.
 
-## Arrancar
+## Punto exacto pendiente: recuperación por correo
+El usuario autorizó usar jonaillusion@gmail.com para probar la recuperación.
+Se hizo UNA solicitud a /api/identity/request-password-reset de la web pública, con redirección a /?view=reset. Neon respondió HTTP 200 y status:true. Esto solo acredita aceptación de la solicitud, NO entrega del correo.
+El usuario aún NO ha confirmado si llegó el mensaje, si abrió el enlace ni si cambió la contraseña. NO afirmar recuperación verificada ni reenviar automáticamente. Preguntar mañana si lo recibió (también Spam; remitente compartido posible auth@mail.myneon.app).
+La contraseña no fue cambiada por el agente. No guardar ni pedir la contraseña o el enlace de recuperación; el usuario debe completar la elección y envío de la nueva contraseña. Si el enlace caducó, proponer solicitar uno nuevo.
 
-Abrir PowerShell en esta carpeta y ejecutar:
+## Próximos pasos acordados
+1. Verificar recepción de correo, enlace, cambio de contraseña y acceso posterior con el usuario.
+2. Configurar avisos por correo al gestor cuando se registre un cliente; requiere elegir y configurar proveedor/remitente. Aún no implementado.
+3. Piloto juntos: cliente nuevo > activar empresa > primer QR impreso > escaneo móvil > cambio de destino > segundo usuario. PILOTO_CLIENTE.md es la lista de seguimiento; no marcar pasos de usuario no confirmados.
 
-```powershell
-npm run dev:accounts
-```
+## Marca y dominio
+Marca mantenida: QR Dinamic 4all.
+Dominio elegido: qrdinamic4all.com, previsto registrar con Cloudflare MÁS ADELANTE. NO comprado, reservado ni conectado; disponibilidad puede cambiar. No contratar sin autorización.
+Para pruebas se puede usar Gmail; correo profesional/autenticación de dominio pendiente.
 
-Abrir http://localhost:3001. Si ya funciona en ese puerto, usar la instancia existente. No hace falta reinstalar dependencias salvo que falten o cambien.
+## Entorno y respaldo
+Neon: old-cell-68983129, rama dev-multiempresa (br-flat-breeze-bam4xkkl).
+Se RETIRÓ y verificó la caducidad: ya NO caduca el 30 de octubre.
+Punto de recuperación listo: respaldo-previo-piloto-20261024 (br-plain-wildflower-ba5e14uy), sin compute adicional, dentro del mismo proyecto. No es una copia externa independiente ni se ha ensayado restauración. Recuperación histórica configurada: 6 horas.
+Antes de ofrecer comercialmente: restauración probada, copia independiente, recuperación de contraseñas, dominio, correo, condiciones y alojamiento compatible con actividad comercial. Vercel Hobby no permite uso comercial.
 
-La cuenta ficticia de revisión y su contraseña están en .account-review.txt. Se conservan .env.local y .env.multiempresa.local en esta carpeta; no se suben a GitHub ni a Vercel. No compartirlos. No ejecutar git clean ni borrar archivos locales ignorados.
-
-## Terminado y probado
-
-- Base multiempresa: marcas, miembros, QR y escaneos separados; permisos por rol.
-- Neon Auth habilitado solo en la rama de pruebas dev-multiempresa.
-- Registro, acceso, sesión persistente y cierre con revocación comprobados.
-- Una cuenta nueva queda pendiente de activación manual por el operador.
-- Espacio privado y personalización del nombre/logo de empresa.
-- Dos cuentas reales de prueba no pueden leer ni modificar la empresa ajena.
-- Pruebas anteriores 4/4, integración de empresas y de cuentas correctas; TypeScript y ambas compilaciones correctas.
-- Navegador: acceso, cambio a Marca de revisión y recarga conservando sesión comprobados.
-
-## Siguiente trabajo
-
-1. Conectar la gestión completa de QR al espacio de la empresa autenticada, con permisos en cada ruta.
-2. Mantener las redirecciones públicas y preparar la migración sin cambiar los enlaces QR existentes.
-3. Implementar invitaciones de usuarios y aceptación con identidad verificada.
-4. Verificar recuperación de contraseña mediante un correo de prueba autorizado. El formulario existe, pero no se ha probado la entrega ni un cambio real por correo.
-5. Probar el recorrido completo en ensayo antes de activar el modo de cuentas en producción. Para clientes reales: verificación de correo y configuración SMTP propia.
-6. Suscripciones y pagos quedan para una fase posterior; activación inicial manual.
-
-## Entorno temporal
-
-Neon: proyecto old-cell-68983129, rama dev-multiempresa (br-flat-breeze-bam4xkkl).
-Caduca el 30 octubre 2026 a las 22:00 de Madrid. Mañana seguirá dentro de ese plazo. Antes de esa fecha habrá que conservar o recrear el entorno si queremos seguir usándolo. GitHub mantiene el código independientemente de esta caducidad.
-
-No se ha activado el modo de cuentas en producción ni se ha modificado Illusion. MULTIEMPRESA.md contiene los detalles técnicos, comandos y limitaciones. Existe un archivo .txt ajeno a estos cambios que ya estaba sin seguimiento: se conserva localmente y no se incluye en GitHub.
+## Publicación y datos privados
+Vercel: qr-dinamic-4all-pruebas, equipo jonaans-projects. Configuración vercel.accounts.json. VITE_ACCOUNT_MODE=true en compilación; ACCOUNT_MODE=true, ACCOUNT_APP_ORIGIN del dominio público, NEON_AUTH_BASE_URL y MULTITENANT_DATABASE_URL en servidor. Conservar esas variables al actualizar. No desplegar sin ellas ni reemplazar la demo antigua por accidente.
+.env.local y .env.multiempresa.local contienen secretos y no están en GitHub. No imprimirlos ni subirlos. Las credenciales ficticias locales .account-review.txt y .demo-access.txt se conservan ignoradas. Hay un .txt ajeno sin seguimiento que se mantiene local y no se añade.
+Arranque local, solo si hace falta: npm run dev:accounts en la carpeta correcta (puerto 3001). La web pública funciona con el ordenador apagado.
 
 ## Frase para retomar
-
-Continuamos QR Dinamic 4all desde CONTINUAR_MANANA.md, rama feature/multiempresa-base. Conectemos la gestión de QR a las empresas autenticadas sin cambiar los enlaces existentes.
-
-
-## 24 octubre: QR y administración local
-QR por empresa conectados: crear, PNG, destino editable con enlace estable /q/, pausa, archivo y contador de accesos. Los enlaces localhost solo sirven en el propio ordenador. Las rutas anteriores /r/ de la demo no se han migrado.
-Panel de clientes implementado con permisos en platform_administrators y activación desde web. Migración 003 aplicada solo en desarrollo. Asignación a jonaillusion@gmail.com pendiente de autorización explícita tras rechazo del revisor automático. Ningún permiso general asignado a cuentas reales.
-Validado TypeScript, compilación de cuentas e integración de acceso, separación entre empresas, permisos y QR. Cambios locales, sin publicar ni subir a GitHub en esta etapa.
-
-
-## Panel original conectado (24 octubre)
-Acceso de administrador: http://localhost:3001/admin. Acceso de clientes: http://localhost:3001/. La identidad de jonaillusion@gmail.com tiene permiso general de desarrollo con autorización explícita del usuario.
-La empresa autenticada usa el panel original App.tsx con instalaciones, diseño/pegatinas, estadísticas, marca y simulador. Las rutas panel están autorizadas por empresa. Migración 004 aplicada en desarrollo para detalles de proyectos y accesos. Equipo muestra miembros reales; invitaciones pendientes. Perfil del navegador no cambia la identidad autenticada. Eliminar archiva conservando los datos.
-Verificado TypeScript, compilación e integración con empresas ficticias, diseño persistente, historial, enlaces estables, simulación, archivo y acceso entre empresas denegado. No publicado ni subido a GitHub.
-
-
-## Consumo en administración (24 octubre)
-/admin muestra resumen por empresa, QR totales/activos/pausados/archivados, accesos reales totales y del mes calendario Madrid, simulaciones separadas y detalle paginado de códigos. Límite inicial 100 QR creados acumulados, incluidos archivados; configurable por empresa, guardado en tenant_companies.qr_limit (migración 005 solo desarrollo). El exceso alerta para revisar cobro; no hay cargos ni bloqueo automático. Solo administradores generales acceden a estas rutas.
-
-
-## Equipo con invitaciones (24 octubre)
-Equipo permite crear invitaciones por correo y rol (técnico, consulta; solo propietario invita administradores). Se copia enlace personal de 7 días, sin envío automático de correo. Invitado abre enlace, entra o se registra con el correo indicado y acepta. Token en fragmento URL, solo hash en BD, uso único, revocación y reemplazo invalidan enlaces. No se concede administración general. Migración 006 aplicada solo en desarrollo. Localhost solo sirve en este ordenador; publicación y correo de invitación pendientes para uso remoto.
-
-
-## Alta simplificada de equipo
-Equipo > Añadir usuario: nombre, correo y rol; enlace de alta por 7 días sin envío de correo. Datos de alta obtenidos del servidor mediante token; nombre y correo preparados, nuevo usuario elige contraseña y entra directamente. Si ya tiene cuenta, puede iniciar sesión. Se mantiene el enlace al cambiar entre registro y acceso. Si hay una cuenta distinta abierta se informa y se ofrece cambiarla, sin intentar concederle el acceso. Migración 007 aplicada en desarrollo.
-
-
-## Corrección de caducidad — 24 octubre 2026
-La caducidad anteriormente indicada del 30 de octubre YA NO APLICA: se retiró y se verificó que dev-multiempresa no tiene expires_at. Creado punto de recuperación respaldo-previo-piloto-20261024, ID br-plain-wildflower-ba5e14uy, sin compute, dentro del mismo proyecto. La ventana histórica es de 6 horas. Ensayo de restauración y copias externas independientes pendientes antes de producción. Siguiente: piloto guiado desde la web publicada, cliente nuevo > activar empresa > marca > QR impreso > cambios de destino > alta de miembro.
-
-
-## Administración compacta
-Pestañas Resumen, Clientes, Registros pendientes y Códigos y consumo. Registros actualizados cada 20 segundos con la pestaña visible y al recuperar foco; avisos dentro del portal y contador persistente de pendientes. No son notificaciones push ni correo. Baja reversible por empresa con confirmación: suspende a sus miembros y QR, conserva datos, permite reactivar. Cuenta suspendida se distingue de registro pendiente.
+Continuamos QR Dinamic 4all desde CONTINUAR_MANANA.md. Primero pregunta si llegó el correo de recuperación solicitado a jonaillusion@gmail.com y si quiero añadir algo más antes de hacer cambios.
