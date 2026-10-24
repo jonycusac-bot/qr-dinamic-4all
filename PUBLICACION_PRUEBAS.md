@@ -11,3 +11,7 @@ Los clientes se registran en la raíz. El administrador activa la empresa en /ad
 Los nuevos QR creados desde la web publicada apuntan al dominio público. Los QR impresos antes con localhost siguen siendo locales: descargar nuevamente desde la web publicada.
 
 La demo anterior y sus redirecciones /r no se han migrado a esta versión.
+
+## Publicación verificada
+Publicada el 24 de octubre de 2026 en el dominio indicado. Registro real de prueba, sesión, activación, QR y redirección, estadísticas, permisos y cierre de sesión comprobados desde Internet. Cuenta y empresa ficticias de verificación eliminadas al terminar.
+La configuración de cuenta y la conexión de desarrollo se suministraron como variables privadas del despliegue; no están en GitHub ni en este documento. Para actualizar Vercel deben conservarse esas variables y usar vercel.accounts.json con VITE_ACCOUNT_MODE=true durante la compilación.
